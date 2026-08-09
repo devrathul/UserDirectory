@@ -3,15 +3,21 @@ let userDirectoryLoadder_El = document.getElementById('userDirectoryLoadder');
 let refreshUser_El = document.getElementById("refreshUser");
 let useraddress_details_El = document.getElementById('useraddress_details');
 let userCount_El =document.getElementById("userCount");
+let txtusersearch_El = document.querySelector('#txtusersearch');
 let dataUserData = "";
 
 refreshUser_El.addEventListener('click', () => {
     getUserDirectory();
-})
+});
+
+txtusersearch_El.addEventListener('input',(event)=>{
+    let searchval = event.target.value.trim();
+    let newUserData = dataUserData.filter(user => user.name?.toLowerCase().includes(searchval.toLowerCase()));
+    displayUserDetails(newUserData);
+});
 
 const getUserDirectory = async () => {
-    try {
-        userdirectoryContainer_EL.innerHTML = "";
+    try {        
         userDirectoryLoadder_El.classList.remove("hidden")
         userDirectoryLoadder_El.classList.add("flex");
         const response = await fetch('https://jsonplaceholder.typicode.com/users');
@@ -31,6 +37,7 @@ const getUserDirectory = async () => {
 }
 
 const displayUserDetails = (data) => {
+    userdirectoryContainer_EL.innerHTML = "";
     userCount_El.textContent = data.length;
     for (let index = 0; index < data.length; index++) {
         userdirectoryContainer_EL.innerHTML += `<div class="flex flex-col gap-4 border border-gray-300 rounded-lg p-6 shadow-2xl">
