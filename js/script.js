@@ -2,22 +2,46 @@ let userdirectoryContainer_EL = document.getElementById('userdirectoryContainer'
 let userDirectoryLoadder_El = document.getElementById('userDirectoryLoadder');
 let refreshUser_El = document.getElementById("refreshUser");
 let useraddress_details_El = document.getElementById('useraddress_details');
-let userCount_El =document.getElementById("userCount");
+let userCount_El = document.getElementById("userCount");
 let txtusersearch_El = document.querySelector('#txtusersearch');
+let sortwithuser_El = document.getElementById("sortwithuser");
 let dataUserData = "";
+let searchval = "";
+let sortval = "";
 
 refreshUser_El.addEventListener('click', () => {
     getUserDirectory();
 });
 
-txtusersearch_El.addEventListener('input',(event)=>{
-    let searchval = event.target.value.trim();
-    let newUserData = dataUserData.filter(user => user.name?.toLowerCase().includes(searchval.toLowerCase()));
-    displayUserDetails(newUserData);
+txtusersearch_El.addEventListener('input', (event) => {
+    searchval = event.target.value.trim();
+    updateUserDirectory();
 });
 
+sortwithuser_El.addEventListener('change', (event) => {
+    sortval = event.target.value.toLowerCase();
+    updateUserDirectory();;
+});
+
+const updateUserDirectory = () => {
+
+    let newUserData = dataUserData.filter(user => user.name?.toLowerCase().includes(searchval.toLowerCase()));
+
+    if (sortval === "a-z") {
+        newUserData.sort((firstObj, secondObj) =>
+            firstObj.name.localeCompare(secondObj.name)
+        );
+    } else if (sortval === "z-a") {
+        newUserData.sort((firstObj, secondObj) =>
+            secondObj.name.localeCompare(firstObj.name)
+        );
+    }
+
+    displayUserDetails(newUserData);
+};
+
 const getUserDirectory = async () => {
-    try {        
+    try {
         userDirectoryLoadder_El.classList.remove("hidden")
         userDirectoryLoadder_El.classList.add("flex");
         const response = await fetch('https://jsonplaceholder.typicode.com/users');
