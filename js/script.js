@@ -2,6 +2,7 @@ let userdirectoryContainer_EL = document.getElementById('userdirectoryContainer'
 let userDirectoryLoadder_El = document.getElementById('userDirectoryLoadder');
 let refreshUser_El = document.getElementById("refreshUser");
 let useraddress_details_El = document.getElementById('useraddress_details');
+let userCount_El =document.getElementById("userCount");
 let dataUserData = "";
 
 refreshUser_El.addEventListener('click', () => {
@@ -30,7 +31,7 @@ const getUserDirectory = async () => {
 }
 
 const displayUserDetails = (data) => {
-
+    userCount_El.textContent = data.length;
     for (let index = 0; index < data.length; index++) {
         userdirectoryContainer_EL.innerHTML += `<div class="flex flex-col gap-4 border border-gray-300 rounded-lg p-6 shadow-2xl">
                     <div class="flex items-center gap-4">
